@@ -3,6 +3,7 @@
 - To start the project you need to run `docker compose up -d` it will pull the images if not exists and spin up the containers.
 
 - Run `make install` to install dependencies if this is the first time. :dart:
+- Run `make jwt` to generate jwt keys.
 
 ## Run Tests
 
@@ -29,14 +30,6 @@ You can check the code against the PSR-12 coding standard `make autofix`
 ## Stop/Start containers
 
 Run `make stop` or `make up` to start containers again
-
-## JWT
-
-```
-openssl genpkey -algorithm RSA -out private.pem
-openssl rsa -pubout -in private.pem -out public.pem
-chmod 644 public.pem private.pem
-```
 
 ## Troublechute
 

@@ -4,6 +4,12 @@ install:
 	@docker-compose exec php ./bin/console doctrine:database:create --if-not-exists
 	@docker-compose exec php ./bin/console doctrine:schema:update  --force
 
+.PHONE: jwt
+jwt:
+	@docker-compose exec php openssl genpkey -algorithm RSA -out config/jwt/private.pem
+	@docker-compose exec php openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+	@docker-compose exec php chmod 644 config/jwt/public.pem config/jwt/private.pem
+
 .PHONY: test
 test:
 	@docker-compose exec php ./bin/console doctrine:database:create --if-not-exists --env test
