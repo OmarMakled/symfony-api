@@ -4,6 +4,10 @@ install:
 	@docker-compose exec php ./bin/console doctrine:database:create --if-not-exists
 	@docker-compose exec php ./bin/console doctrine:schema:update  --force
 
+.PHONE: dev
+dev:
+	@docker-compose exec php chmod 777 /var/www/api/public/uploads/
+
 .PHONE: jwt
 jwt:
 	@docker-compose exec php openssl genpkey -algorithm RSA -out config/jwt/private.pem
