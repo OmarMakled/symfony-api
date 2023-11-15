@@ -1,3 +1,5 @@
+Invalid credentials: "Invalid credentials make sure the email and password are correct!"
+Invalid JWT Token: "Invalid JWT Token make sure the token are correct!"
 activation:
   subject: Your best newsletter
   body: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id interdum nibh. Phasellus blandit tortor in cursus convallis. Praesent et tellus fermentum, pellentesque lectus at, tincidunt risus. Quisque in nisl malesuada, aliquet nibh at, molestie libero

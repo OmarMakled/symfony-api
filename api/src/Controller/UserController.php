@@ -3,19 +3,20 @@
 namespace App\Controller;
 
 use App\DTO\UserDTO;
-use App\Entity\Photo;
-use App\Repository\UserRepository;
+use App\EventListener\ExceptionListener;
+use App\EventListener\ResponseListener;
 use App\Resource\UserResource;
-use App\Service\Uploader\PhotoUploader;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use OpenApi\Annotations as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Service\User\UserLoginService;
 use Nelmio\ApiDocBundle\Annotation\Model;
+use App\Service\Validator\ValidatorService;
+use App\Service\User\UserRegistrationService;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
 {
@@ -67,7 +68,7 @@ class UserController extends AbstractController
      *     @OA\Response(
      *         response=400,
      *         description="Validation error",
-     *         @OA\JsonContent(type="object", @OA\Property(property="errors", type="array", @OA\Items(type="string")))
+     *         @OA\JsonContent(type="object", @OA\Property(property="error", type="array", @OA\Items(type="string")))
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -80,36 +81,19 @@ class UserController extends AbstractController
      *     security={}
      * )
      */
-    public function register(Request $request, UserRepository $userRepository, UserPasswordEncoderInterface $passwordEncoder, ValidatorInterface $validator, PhotoUploader $photoUploader): JsonResponse
+    public function register(Request $request, ValidatorService $validator, UserRegistrationService $userRegistrationService): JsonResponse
     {
         $userDTO = UserDTO::createFromRequest($request);
-
-        $errors = $validator->validate($userDTO);
-        if (count($errors) > 0) {
-            $errorMessages = [];
-            foreach ($errors as $error) {
-                $errorMessages[] = $error->getMessage();
-            }
-            return new JsonResponse(['errors' => $errorMessages], 400);
+        if (!$validator->isValid($userDTO)) {
+            return new JsonResponse(['error' => $validator->getErrors()], Response::HTTP_BAD_REQUEST);
         }
-
-        $user = $userDTO->makeUser();
-        foreach ($photoUploader->upload($userDTO->getPhotos()) as $file) {
-            $photo = new Photo();
-            $photo->setUrl($file->url);
-            $photo->setName($file->name);
-            $user->addPhoto($photo);
-        }
-
-        $user->setPassword($passwordEncoder->encodePassword($user, $user->getPlainPassword()));
-        $userRepository->add($user);
-
-        return new JsonResponse(UserResource::toArray($user), 201);
+        $user = $userRegistrationService->create($userDTO);
+        return new JsonResponse(UserResource::toArray($user), Response::HTTP_CREATED);
     }
 
     /**
      * @Route("/api/users/login", name="user_login", methods="POST")
-     *
+     * @see ExceptionListener
      * @OA\Post(
      *     path="/api/users/login",
      *     summary="Login to the application",
@@ -136,26 +120,27 @@ class UserController extends AbstractController
      *     @OA\Response(
      *         response=401,
      *         description="Invalid credentials",
-     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string"))
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="error", type="string")
+     *         )
      *     )
      * )
      */
-    public function login(Request $request, UserRepository $userRepository, UserPasswordEncoderInterface $encoder, JWTTokenManagerInterface $jwtManager): JsonResponse
+    public function login(Request $request, UserLoginService $userLoginService): JsonResponse
     {
         $email = $request->request->get('email');
         $password = $request->request->get('password');
-        $user = $userRepository->findOneBy(['email' => $email]);
-
-        if (!$user || !$encoder->isPasswordValid($user, $password)) {
-            return new JsonResponse(['message' => 'Invalid credentials'], 401);
+        if (empty($email) || empty($password)) {
+            throw new HttpException(Response::HTTP_BAD_REQUEST, 'Invalid credentials');
         }
-
-        return new JsonResponse(['token' => $jwtManager->create($user)]);
+        $token = $userLoginService->login($request->request->get('email'), $request->request->get('password'));
+        return new JsonResponse(['token' => $token]);
     }
 
     /**
      * @Route("/api/users/me", name="api_user_me", methods={"GET"})
-     *
+     * @see ResponseListener
      * @OA\Get(
      *     path="/api/users/me",
      *     summary="Get information about the currently authenticated user",
@@ -172,7 +157,7 @@ class UserController extends AbstractController
      *     @OA\Response(
      *         response=401,
      *         description="Invalid credentials",
-     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string"))
+     *         @OA\JsonContent(type="object", @OA\Property(property="error", type="string"))
      *     )
      * )
      */

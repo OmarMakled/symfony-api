@@ -3,10 +3,13 @@ install:
 	@docker-compose exec php composer install
 	@docker-compose exec php ./bin/console doctrine:database:create --if-not-exists
 	@docker-compose exec php ./bin/console doctrine:schema:update  --force
+	@make dev
+	@make jwt
 
 .PHONE: dev
 dev:
 	@docker-compose exec php chmod 777 /var/www/api/public/uploads/
+	@docker-compose exec php /etc/init.d/cron start
 
 .PHONE: jwt
 jwt:

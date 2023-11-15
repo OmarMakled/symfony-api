@@ -49,7 +49,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="boolean")
      */
-    private bool $isActive;
+    private bool $isActive = true;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -86,6 +86,7 @@ class User implements UserInterface
      */
     public function prePersist(): void
     {
+        $this->setFullName($this->lastName . ' ' . $this->firstName);
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
     }

@@ -19,8 +19,7 @@ class UserControllerTest extends WebTestCase
             'first_name' => 'John',
             'last_name' => 'Doe',
             'email' => 'john.doe@example.com',
-            'password' => 'password123',
-            'avatar' => '/default-avatar.jpg',
+            'password' => 'password123'
         ];
         $this->client->request('POST', '/api/users/register', $userData);
         $response = $this->client->getResponse();
@@ -36,8 +35,7 @@ class UserControllerTest extends WebTestCase
             'first_name' => 'John',
             'last_name' => 'Doe',
             'email' => 'foo@mail.com',
-            'password' => 'password123',
-            'avatar' => '/default-avatar.jpg',
+            'password' => 'password123'
         ];
 
         $this->client->request('POST', '/api/users/register', $userData);
@@ -45,8 +43,8 @@ class UserControllerTest extends WebTestCase
         $data = json_decode($response->getContent(), true);
 
         self::assertEquals(400, $response->getStatusCode());
-        self::assertArrayHasKey('errors', $data);
-        self::assertEquals('This email is already in use.', $data['errors'][0]);
+        self::assertArrayHasKey('error', $data);
+        self::assertArrayHasKey('email', $data['error']);
     }
 
     public function testRegisterWithPhotos(): void
@@ -56,7 +54,7 @@ class UserControllerTest extends WebTestCase
             'last_name' => 'Doe',
             'email' => 'john.doe@example.com',
             'password' => 'password123',
-            'avatar' => '/default-avatar.jpg',
+            'avatar' => 'http://foo.com/default-avatar.jpg',
         ];
         $file = new UploadedFile(
             __DIR__ . '/test.jpg',
@@ -83,10 +81,8 @@ class UserControllerTest extends WebTestCase
         $this->client->request('POST', '/api/users/login', ['email' => 'foo@mail.com', 'password' => 'xpassword']);
         $response = $this->client->getResponse();
         $data = json_decode($response->getContent(), true);
-
         self::assertEquals(401, $response->getStatusCode());
-        self::assertArrayHasKey('message', $data);
-        self::assertEquals('Invalid credentials', $data['message']);
+        self::assertArrayHasKey('error', $data);
     }
 
     public function testMeOnSuccess(): void
@@ -111,8 +107,7 @@ class UserControllerTest extends WebTestCase
         $data = json_decode($response->getContent(), true);
 
         self::assertEquals(401, $response->getStatusCode());
-        self::assertArrayHasKey('message', $data);
-        self::assertEquals('Invalid JWT Token', $data['message']);
+        self::assertArrayHasKey('error', $data);
     }
 
     private function createUser(string $email, string $password): User

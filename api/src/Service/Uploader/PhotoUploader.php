@@ -14,7 +14,7 @@ class PhotoUploader
     {
     }
 
-    public function upload($files): array
+    public function upload(array $files): array
     {
         $uploadedPhotos = [];
 

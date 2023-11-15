@@ -1,0 +1,22 @@
+firstName:
+  blank: "firstName cannot be blank."
+  minLength: "firstName must be at least {{ limit }} characters long."
+  maxLength: "firstName cannot be longer than {{ limit }} characters."
+lastName:
+  blank: "lastName cannot be blank."
+  minLength: "lastName must be at least {{ limit }} characters long."
+  maxLength: "lastName cannot be longer than {{ limit }} characters."
+email:
+  blank: "email cannot be blank."
+  valid: "This is not a valid email address."
+  unique: "This email is already in use."
+password:
+  blank: "password cannot be blank."
+  strong: "The password must be between {{ min }} and {{ max }} characters and contain at least one number."
+avatar:
+  url: "avatar is no valid url."
+photo:
+  type: "photo must be an array or null."
+  minCountMessage: "At least 4 images should be uploaded"
+  mimeTypesMessage: "Only JPEG and PNG images are allowed."
+  maxSizeMessage: "The file is too large. Maximum allowed size is {{ limit }}."
