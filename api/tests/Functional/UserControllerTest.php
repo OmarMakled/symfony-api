@@ -141,5 +141,6 @@ class UserControllerTest extends WebTestCase
         self::assertArrayHasKey('email', $data['user']);
         self::assertArrayHasKey('avatar', $data['user']);
         self::assertArrayHasKey('is_active', $data['user']);
+        self::assertArrayHasKey('photos', $data['user']);
     }
 }

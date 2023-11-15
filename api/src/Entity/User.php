@@ -86,7 +86,7 @@ class User implements UserInterface
      */
     public function prePersist(): void
     {
-        $this->setFullName($this->lastName . ' ' . $this->firstName);
+        $this->fullName = $this->lastName . ' ' . $this->firstName;
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
     }
@@ -124,13 +124,6 @@ class User implements UserInterface
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    public function setFullName(string $fullName): self
-    {
-        $this->fullName = $fullName;
 
         return $this;
     }

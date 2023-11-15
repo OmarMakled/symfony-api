@@ -13,7 +13,6 @@ class UserFactory
         $user->setFirstName($data['firstName'] ?? 'John');
         $user->setLastName($data['lastName'] ?? 'Doe');
         $user->setEmail($data['email'] ?? 'john.doe@example.com');
-        $user->setFullName($user->getFirstName() . ' ' . $user->getLastName());
         $user->setAvatar($data['avatar'] ?? '/');
         $user->setPassword($data['password'] ?? 'password');
         $user->setPlainPassword($data['password'] ?? 'password');
