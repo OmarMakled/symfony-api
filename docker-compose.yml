@@ -39,5 +39,11 @@ services:
             - ./api/coverage:/usr/share/nginx/html:cached
         depends_on:
             - db
+    vue:
+        image: node:alpine
+        command: tail -F /dev/null
+        working_dir: /usr/src/app
+        volumes:
+            - ./vue:/usr/src/app
 volumes:
   db_data:

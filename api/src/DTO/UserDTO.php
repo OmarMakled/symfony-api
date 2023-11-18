@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UserDTO
 {
-    public const DEFAULT_AVATAR = "https://foo.com/custom/avatar";
+    public const DEFAULT_AVATAR = "http://localhost:8080/uploads/avatar.jpg";
 
     /**
      * @Assert\NotBlank(message="firstName.blank")

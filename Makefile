@@ -26,6 +26,7 @@ test:
 .PHONY: autofix
 autofix:
 	@docker-compose exec php composer autofix
+	@docker-compose exec vue npm run autofix
 
 .PHONY: up
 up:
@@ -44,3 +45,8 @@ cron:
 remove-cron:
 	@docker-compose exec php crontab -r
 	@echo "Cron job removed successfully."
+
+.PHONY: vue
+vue:
+	@docker-compose exec vue npm install
+	@docker-compose exec vue npm run dev
