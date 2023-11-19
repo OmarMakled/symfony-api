@@ -1,0 +1,21 @@
+body {
+  background-color: #eeeeee;
+}
+.nav a {
+  margin-right: 5px;
+}
+.nav a.active {
+  border: 1px solid;
+}
+.carousel.carousel-slider .control-arrow {
+  top: 50%;
+  background: #999999;
+  height: 40px;
+}
+.carousel .slide img {
+  object-fit: contain;
+  max-height: 300px;
+}
+.carousel .thumbs-wrapper {
+  display: none;
+}

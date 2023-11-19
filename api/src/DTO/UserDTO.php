@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UserDTO
 {
-    public const DEFAULT_AVATAR = "https://foo.com/custom/avatar";
+    public const DEFAULT_AVATAR = "http://localhost:8080/uploads/avatar.jpg";
 
     /**
      * @Assert\NotBlank(message="firstName.blank")
@@ -85,13 +85,14 @@ class UserDTO
 
     public static function createFromRequest(Request $request): self
     {
+        $avatar = $request->request->get('avatar');
         return new static(
             $request->request->get('first_name'),
             $request->request->get('last_name'),
             $request->request->get('email'),
             $request->request->get('password'),
             $request->files->get('photos'),
-            $request->request->get('avatar', self::DEFAULT_AVATAR),
+            ($avatar === '' || $avatar === null) ?  self::DEFAULT_AVATAR : $avatar
         );
     }
 }
