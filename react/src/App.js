@@ -33,7 +33,7 @@ const App = () => {
             component={NavLink}
             to="/"
             end
-            activeClassName="active"
+            activeclassname="active"
             color="inherit"
           >
             Home
@@ -44,7 +44,7 @@ const App = () => {
                 component={NavLink}
                 to="/login"
                 end
-                activeClassName="active"
+                activeclassname="active"
                 color="inherit"
               >
                 Login
@@ -53,7 +53,7 @@ const App = () => {
                 component={NavLink}
                 to="/register"
                 end
-                activeClassName="active"
+                activeclassname="active"
                 color="inherit"
               >
                 Register
@@ -66,7 +66,7 @@ const App = () => {
               to="/profile"
               end
               color="inherit"
-              activeClassName="active"
+              activeclassname="active"
               sx={{ marginLeft: 'auto' }}
             >
               {user.first_name}'s Profile

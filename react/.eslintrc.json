@@ -1,6 +1,3 @@
 {
-  "extends": ["react-app", "react-app/jest", "prettier"],
-  "rules": {
-    "semi": ["error", "never"]
-  }
+  "extends": ["react-app", "react-app/jest", "prettier"]
 }
