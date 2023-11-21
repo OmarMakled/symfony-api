@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Functional;
 
 use App\Entity\User;
 use App\Factory\UserFactory;
