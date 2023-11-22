@@ -16,6 +16,7 @@ password:
 avatar:
   url: "avatar is no valid url."
 photo:
+  blank: "photo cannot be blank."  
   type: "photo must be an array or null."
   minCountMessage: "At least 4 images should be uploaded"
   mimeTypesMessage: "Only JPEG and PNG images are allowed."
