@@ -1,18 +1,13 @@
 <?php
 
-namespace App\Tests\Controller;
+namespace App\Tests\Functional;
 
-use App\Entity\User;
 use App\Factory\UserFactory;
-use App\Tests\RollBackTrait;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserControllerTest extends WebTestCase
+class UserControllerTest extends BaseController
 {
-    use RollBackTrait;
-
     public function testRegisterOnSuccess()
     {
         $userData = [
@@ -28,13 +23,14 @@ class UserControllerTest extends WebTestCase
         self::assertEquals(201, $response->getStatusCode());
     }
 
-    public function testRegisterOnFail()
+    public function testRegisterOnFailEmailAlreadyExists()
     {
-        $this->createUser('foo@mail.com', 'password');
+        $userRepo = self::$container->get(UserRepository::class);
+        $user = $userRepo->findOneBy(['email' => 'user-1@mail.com']);
         $userData = [
             'first_name' => 'John',
             'last_name' => 'Doe',
-            'email' => 'foo@mail.com',
+            'email' => $user->getEmail(),
             'password' => 'password123'
         ];
 
@@ -75,10 +71,7 @@ class UserControllerTest extends WebTestCase
 
     public function testLogin(): void
     {
-        $this->createUser('foo@mail.com', 'password');
-        $this->generateToken(['email' => 'foo@mail.com', 'password' => 'password']);
-
-        $this->client->request('POST', '/api/users/login', ['email' => 'foo@mail.com', 'password' => 'xpassword']);
+        $this->client->request('POST', '/api/users/login', ['email' => 'user-1@mail.com', 'password' => 'wrongpassword']);
         $response = $this->client->getResponse();
         $data = json_decode($response->getContent(), true);
         self::assertEquals(401, $response->getStatusCode());
@@ -87,8 +80,9 @@ class UserControllerTest extends WebTestCase
 
     public function testMeOnSuccess(): void
     {
-        $this->createUser('foo@mail.com', 'password');
-        $token = $this->generateToken(['email' => 'foo@mail.com', 'password' => 'password']);
+        $userRepo = self::$container->get(UserRepository::class);
+        $user = $userRepo->findOneBy(['email' => 'user-1@mail.com']);
+        $token = $this->generateToken($user->getEmail(), UserFactory::PASSWORD);
         $this->client->request('GET', '/api/users/me', [], [], [
             'HTTP_AUTHORIZATION' => 'Bearer ' . $token,
         ]);
@@ -108,39 +102,5 @@ class UserControllerTest extends WebTestCase
 
         self::assertEquals(401, $response->getStatusCode());
         self::assertArrayHasKey('error', $data);
-    }
-
-    private function createUser(string $email, string $password): User
-    {
-        $userPasswordEncoderInterface = self::$container->get(UserPasswordEncoderInterface::class);
-        $userRepository = $this->em->getRepository(User::class);
-        $user = UserFactory::create(['email' => $email, 'password' => $password], $userPasswordEncoderInterface);
-        $userRepository->add($user);
-
-        return $user;
-    }
-
-    private function generateToken(array $credentials): string
-    {
-        $this->client->request('POST', '/api/users/login', $credentials);
-        $response = $this->client->getResponse();
-        $data = json_decode($response->getContent(), true);
-
-        self::assertEquals(200, $response->getStatusCode());
-        self::assertArrayHasKey('token', $data);
-
-        return $data['token'];
-    }
-
-    private static function assertUser(array $data)
-    {
-        self::assertIsArray($data['user']);
-        self::assertArrayHasKey('id', $data['user']);
-        self::assertArrayHasKey('first_name', $data['user']);
-        self::assertArrayHasKey('last_name', $data['user']);
-        self::assertArrayHasKey('email', $data['user']);
-        self::assertArrayHasKey('avatar', $data['user']);
-        self::assertArrayHasKey('is_active', $data['user']);
-        self::assertArrayHasKey('photos', $data['user']);
     }
 }

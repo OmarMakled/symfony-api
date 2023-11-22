@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Factory;
+namespace App\Tests\Unit\Factory;
 
 use App\Entity\User;
 use App\Factory\UserFactory;
@@ -17,7 +17,7 @@ class UserFactoryTest extends TestCase
         self::assertSame('Doe', $user->getLastName());
         self::assertSame('john.doe@example.com', $user->getEmail());
         self::assertSame('/', $user->getAvatar());
-        self::assertSame('password', $user->getPassword());
+        self::assertSame(UserFactory::PASSWORD, $user->getPassword());
         self::assertTrue($user->getIsActive());
     }
 }
