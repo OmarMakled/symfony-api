@@ -10,10 +10,13 @@ security:
                 property: email
     firewalls:
         api:
-            pattern:  /api/users/me
+            pattern: ^/api
             stateless: true
-            anonymous: false
+            anonymous: true
             provider: entity_provider
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
+    access_control:
+        - { path: ^/api/users/me, roles: ROLE_USER }
+        - { path: ^/api/users/(login|register), roles: IS_AUTHENTICATED_ANONYMOUSLY }
