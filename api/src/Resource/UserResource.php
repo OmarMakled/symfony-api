@@ -53,7 +53,9 @@ class UserResource
                 'is_active' => $user->getIsActive(),
                 'created_at' => $user->getCreatedAt()->format('Y-m-d H:i:s'),
                 'updated_at' => $user->getUpdatedAt()->format('Y-m-d H:i:s'),
-                'photos' => self::getPhotos($user)
+                'photos' => self::getPhotos($user),
+                'roles' => $user->getRoles(),
+                'isAdmin' => $user->isAdmin()
             ]
         ];
     }
