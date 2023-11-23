@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -45,5 +46,26 @@ class UserRepository extends ServiceEntityRepository
             ->setParameter('start_date', $startDate->format('Y-m-d'))
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Paginate users.
+     *
+     * @param int $page
+     * @param int $limit
+     * @return Paginator
+     */
+    public function paginate(int $page, int $limit = 10): Paginator
+    {
+        $query = $this->createQueryBuilder('u')
+            ->getQuery();
+
+        $paginator = new Paginator($query);
+        $paginator
+            ->getQuery()
+            ->setFirstResult(($page - 1) * $limit) // Offset
+            ->setMaxResults($limit); // Limit
+
+        return $paginator;
     }
 }
