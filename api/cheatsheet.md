@@ -1,3 +1,6 @@
+### goal 
+Always strive for a balance between decoupling and simplicity based on your specific use case.
+
 ### console
 bin/console make:controller
 bin/console debug:router
@@ -39,3 +42,8 @@ $eventDispatcher->dispatch(new PhotoUploadEvent(
     $this->getUser()
 ), PhotoUploadEvent::class);
 ```
+
+- create admin that can display all users
+
+sudo chown -R omar:omar src
+sudo chown -R 777 src

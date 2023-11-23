@@ -31,6 +31,15 @@ use App\Entity\User;
  */
 class UserResource
 {
+    public static function toArrayCollection(array $users): array
+    {
+        $result = ['users' => []];
+        foreach ($users as $user) {
+            $result['users'][] = self::toArray($user)['user'];
+        }
+        return $result;
+    }
+
     public static function toArray(User $user): array
     {
         return [
