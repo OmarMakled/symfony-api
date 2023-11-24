@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Tests\Functional;
+namespace App\Tests\Functional\Controller;
 
 use App\Factory\UserFactory;
 use App\Repository\UserRepository;
+use App\Tests\BaseController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UserControllerTest extends BaseController

@@ -95,4 +95,17 @@ class UserDTO
             ($avatar === '' || $avatar === null) ?  self::DEFAULT_AVATAR : $avatar
         );
     }
+
+    public static function createFromArray(array $data): self
+    {
+        $avatar = $data['avatar'] ?? '';
+        return new static(
+            $data['firstName'] ?? '',
+            $data['lastName'] ?? '',
+            $data['email'] ?? '',
+            $data['password'] ?? '',
+            $data['photos'] ?? null,
+            ($avatar === '' || $avatar === null) ?  self::DEFAULT_AVATAR : $avatar
+        );
+    }
 }

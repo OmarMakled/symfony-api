@@ -14,15 +14,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import LoginForm from "@/components/LoginForm.vue"
+import { mapGetters } from 'vuex';
+import LoginForm from '@/components/LoginForm.vue';
 
 export default {
   components: {
     LoginForm,
   },
   computed: {
-    ...mapGetters('auth', ['responseError']),
-  }
-}
+    ...mapGetters(['responseError']),
+  },
+};
 </script>
