@@ -33,6 +33,14 @@ const actions = {
       console.error('Fail:', error.message)
       throw error
     }
+  },
+  async deleteUser({rootGetters}, userId) {
+    try {
+      await api.deleteUser(rootGetters['auth/token'], userId)
+    } catch(error) {
+      console.error('Fail:', error.message)
+      throw error
+    }
   }
 }
 

@@ -34,7 +34,6 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import router from '../router'
 
 export default {
   data() {
@@ -66,9 +65,9 @@ export default {
         })
         await this.profile()
         if (this.isAdmin){
-          router.push('/admin')
+          this.$router.push('/admin');
         }else {
-          router.push('/profile')
+          this.$router.push('/profile');
         }
       }catch(err){
         console.log(err)

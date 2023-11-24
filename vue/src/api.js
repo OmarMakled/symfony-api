@@ -61,4 +61,9 @@ export const adminApi = {
       Authorization: `Bearer ${token}`
     }
   }),
+  deleteUser: (token, userId) => api.delete(`/admin/users/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  }),
 };
