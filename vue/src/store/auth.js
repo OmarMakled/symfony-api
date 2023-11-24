@@ -104,6 +104,15 @@ const actions = {
       console.error('Fail:', error.message)
       throw error
     }
+  },
+  async getUsers({state}, { page }) {
+    try {
+      const response = await api.getUsers(state.token, { page })
+      return response.data
+    } catch(error) {
+      console.error('Fail:', error.message)
+      throw error
+    }
   }
 }
 

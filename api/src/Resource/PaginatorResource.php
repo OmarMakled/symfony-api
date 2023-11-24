@@ -7,7 +7,7 @@ class PaginatorResource
     public static function toArray(int $totalItems, int $currentPage, int $itemsPerPage): array
     {
         return [
-            'pagination' => [
+            'paginator' => [
                 'total_items' => $totalItems,
                 'current_page' => $currentPage,
                 'items_per_page' => $itemsPerPage,
