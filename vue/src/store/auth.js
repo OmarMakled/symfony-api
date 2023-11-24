@@ -75,6 +75,20 @@ const actions = {
     } catch({message}) {
       console.error('Fail:', message)
     }
+  },
+  async upload({commit, state}, {photos}) {
+    try {
+      const formData = new FormData() 
+      for (const photo of photos) {
+        formData.append('photos[]', photo)
+      }      
+      const response = await api.upload(state.token, formData)
+      const { user } = response.data
+      commit('setUser', user)
+    } catch(error) {
+      console.error('Fail:', error.message)
+      throw error
+    }
   }
 }
 

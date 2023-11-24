@@ -82,14 +82,23 @@
           </v-card-text>
         </v-card>
       </v-col>
+      <v-col
+        cols="12"
+      >
+        <UploadForm />  
+      </v-col>
     </v-row>
   </v-container>
 </template>  
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import router from '../router'
+import UploadForm from '../components/UploadForm.vue'
 
 export default {
+  components: {
+    UploadForm
+  },
   computed: {
     ...mapGetters('auth', ['user']),
   },

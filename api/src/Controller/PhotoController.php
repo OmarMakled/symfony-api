@@ -7,6 +7,7 @@ use App\Entity\Photo;
 use App\Repository\PhotoRepository;
 use App\Service\Validator\ValidatorService;
 use App\EventListener\Event\PhotoUploadEvent;
+use App\Resource\UserResource;
 use App\Service\User\UserUpdatePhotoService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,6 +43,6 @@ class PhotoController extends AbstractController
 
         $userUpdatePhotoService->update($this->getUser(), $photoDTO);
 
-        return new JsonResponse([], Response::HTTP_CREATED);
+        return new JsonResponse(UserResource::toArray($this->getUser()), Response::HTTP_CREATED);
     }
 }

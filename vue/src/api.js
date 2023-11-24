@@ -33,3 +33,4 @@ api.interceptors.response.use(
 export const login = (userData) => api.post('/users/login', userData)
 export const register = (userData) => api.post('/users/register', userData)
 export const me = (token) => api.get('/users/me', { headers: { Authorization: `Bearer ${token}` } })
+export const upload = (token, userData) => api.post('/photos', userData, { headers: { Authorization: `Bearer ${token}` } })
