@@ -70,7 +70,12 @@
                   cover
                   class="bg-grey-lighten-2"
                 />
-                <v-btn icon class="delete-button" @click="deletePhoto(photo.id)" :disabled="isSubmitting">
+                <v-btn
+                  icon
+                  class="delete-button"
+                  :disabled="isSubmitting"
+                  @click="deletePhoto(photo.id)"
+                >
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </v-carousel-item>

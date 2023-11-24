@@ -38,9 +38,9 @@ export const deletePhoto = (token, id) => api.delete(`/photos/${id}`, {
   headers: {
     Authorization: `Bearer ${token}`
   }
-});
+})
 export const getUsers = (token, { page }) => api.get(`/admin/users?page=${page}`, {
   headers: {
     Authorization: `Bearer ${token}`
   }
-});
+})

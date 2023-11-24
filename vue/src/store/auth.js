@@ -29,9 +29,9 @@ const mutations = {
     localStorage.setItem('user', JSON.stringify(user))
   },
   removePhotoFromUser(state, id) {
-    const index = state.user.photos.findIndex(photo => photo.id === id);
+    const index = state.user.photos.findIndex(photo => photo.id === id)
     if (index !== -1) {
-      state.user.photos.splice(index, 1);
+      state.user.photos.splice(index, 1)
     }
   },
 }
