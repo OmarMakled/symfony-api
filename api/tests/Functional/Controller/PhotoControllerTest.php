@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Tests\Functional;
+namespace App\Tests\Functional\Controller;
 
 use App\Entity\User;
 use App\Factory\UserFactory;
+use App\Tests\BaseController;
 
 class PhotoControllerTest extends BaseController
 {

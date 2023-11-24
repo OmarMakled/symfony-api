@@ -15,7 +15,6 @@ class AdminRegistrationService
     public function create(User $user)
     {
         $user->setRoles([
-            User::ROLE_USER,
             User::ROLE_ADMIN
         ]);
         $this->userRepository->add($user);

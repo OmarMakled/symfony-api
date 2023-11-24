@@ -37,6 +37,17 @@ class UserRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete(User $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
 
     public function findActiveUsersSinceDate(DateTimeImmutable $startDate)
     {

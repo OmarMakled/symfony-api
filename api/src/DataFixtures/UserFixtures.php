@@ -23,6 +23,9 @@ class UserFixtures extends Fixture
             $manager->persist($user);
         }
 
+        $admin = UserFactory::createAdmin($this->passwordEncoder);
+        $manager->persist($admin);
+
         $manager->flush();
     }
 

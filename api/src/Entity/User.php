@@ -75,7 +75,7 @@ class User implements UserInterface
     private DateTimeImmutable $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="user", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $photos;
 
