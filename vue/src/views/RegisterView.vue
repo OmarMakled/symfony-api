@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import RegisterForm from "@/components/RegisterForm.vue"
+import { mapGetters } from 'vuex';
+import RegisterForm from '@/components/RegisterForm.vue';
 
 export default {
   components: {
@@ -23,6 +23,6 @@ export default {
   },
   computed: {
     ...mapGetters(['responseError']),
-  }
-}
+  },
+};
 </script>

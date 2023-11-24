@@ -1,13 +1,7 @@
 <template>
-  <v-card
-    title="Login"
-    flat
-  >
+  <v-card title="Login" flat>
     <v-card-text>
-      <v-form
-        class="mt-4"
-        @submit.prevent="submit"
-      >
+      <v-form class="mt-4" @submit.prevent="submit">
         <v-text-field
           v-model="email"
           label="Email"
@@ -23,17 +17,14 @@
           variant="outlined"
           required
         />
-        <SubmitButton
-          :is-submitting="isSubmitting"
-          text="Login"
-        />
+        <SubmitButton :is-submitting="isSubmitting" text="Login" />
       </v-form>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
@@ -41,38 +32,36 @@ export default {
       email: 'm@m.s',
       password: '1password',
       emailRules: [
-        v => !!v || 'Email is required',
-        v => /.+@.+\..+/.test(v) || 'Email must be valid',
+        (v) => !!v || 'Email is required',
+        (v) => /.+@.+\..+/.test(v) || 'Email must be valid',
       ],
-      passwordRules: [
-        v => !!v || 'Password is required',
-      ],
-    }
+      passwordRules: [(v) => !!v || 'Password is required'],
+    };
   },
   computed: {
     ...mapGetters({
       isAdmin: 'auth/isAdmin',
-      isSubmitting: 'isSubmitting'
-    }),  
+      isSubmitting: 'isSubmitting',
+    }),
   },
   methods: {
     ...mapActions('auth', ['login', 'profile']),
-    async submit(){
-      try{
+    async submit() {
+      try {
         await this.login({
-          password: this.password, 
-          email: this.email, 
-        })
-        await this.profile()
-        if (this.isAdmin){
+          password: this.password,
+          email: this.email,
+        });
+        await this.profile();
+        if (this.isAdmin) {
           this.$router.push('/admin');
-        }else {
+        } else {
           this.$router.push('/profile');
         }
-      }catch(err){
-        console.log(err)
+      } catch (err) {
+        console.log(err);
       }
-    }
+    },
   },
-}
+};
 </script>

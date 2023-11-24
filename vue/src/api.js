@@ -16,7 +16,7 @@ api.interceptors.request.use(
   },
   function (error) {
     return Promise.reject(error);
-  }
+  },
 );
 
 api.interceptors.response.use(
@@ -26,44 +26,55 @@ api.interceptors.response.use(
     return response;
   },
   function (error) {
-    const responseError = error.response ? error.response.data : { error: 'Network Error' };
+    const responseError = error.response
+      ? error.response.data
+      : { error: 'Network Error' };
     store.commit('setResponseError', responseError.error);
     store.commit('setIsSubmitting', false);
     return Promise.reject(error);
-  }
+  },
 );
 
 export const authApi = {
   login: (userData) => api.post('/users/login', userData),
   register: (userData) => api.post('/users/register', userData),
-  me: (token) => api.get('/users/me', { headers: { Authorization: `Bearer ${token}` } }),
-  upload: (token, userData) => api.post('/photos', userData, { headers: { Authorization: `Bearer ${token}` } }),
-  deletePhoto: (token, photoId) => api.delete(`/photos/${photoId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }),
+  me: (token) =>
+    api.get('/users/me', { headers: { Authorization: `Bearer ${token}` } }),
+  upload: (token, userData) =>
+    api.post('/photos', userData, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
+  deletePhoto: (token, photoId) =>
+    api.delete(`/photos/${photoId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };
 
 export const adminApi = {
-  getUsers: (token, { page }) => api.get(`/admin/users?page=${page}`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }),
-  getUser: (token, userId ) => api.get(`/admin/users/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }),
-  deletePhoto: (token, photoId) => api.delete(`/admin/photos/${photoId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }),
-  deleteUser: (token, userId) => api.delete(`/admin/users/${userId}`, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }),
+  getUsers: (token, { page }) =>
+    api.get(`/admin/users?page=${page}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  getUser: (token, userId) =>
+    api.get(`/admin/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  deletePhoto: (token, photoId) =>
+    api.delete(`/admin/photos/${photoId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  deleteUser: (token, userId) =>
+    api.delete(`/admin/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };
