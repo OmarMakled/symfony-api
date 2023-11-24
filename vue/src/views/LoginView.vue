@@ -22,7 +22,7 @@ export default {
     LoginForm,
   },
   computed: {
-    ...mapGetters('auth', ['responseError']),
+    ...mapGetters(['responseError']),
   }
 }
 </script>

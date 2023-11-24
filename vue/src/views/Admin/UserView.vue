@@ -14,7 +14,7 @@
 
   
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import Slider from '../../components/Slider.vue';
 
 export default {
@@ -32,7 +32,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('auth', ['getUser']),
+    ...mapActions('admin', ['getUser']),
     async fetch(){
       this.user =  await this.getUser({userId: this.userId})
     },

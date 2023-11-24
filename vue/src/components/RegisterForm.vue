@@ -91,7 +91,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('auth', ['isSubmitting']),
+    ...mapGetters(['isSubmitting']),
   },
   methods: {
     ...mapActions('auth', ['login', 'register', 'profile']),

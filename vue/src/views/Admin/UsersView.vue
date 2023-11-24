@@ -64,8 +64,6 @@
     </v-card>
   </v-container>
 </template>
-
-  
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
@@ -77,16 +75,13 @@ export default {
       currentPage: 1,
     }
   },
-  computed: {
-    ...mapGetters('auth', ['user']),
-  },
   watch: {
     currentPage() {
       this.fetch()
     },
   },
   methods: {
-    ...mapActions('auth', ['getUsers']),
+    ...mapActions('admin', ['getUsers']),
     viewPhotos(user) {
       console.log('View photos for user:', user)
     },

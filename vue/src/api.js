@@ -9,7 +9,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   function (config) {
-    store.commit('auth/setIsSubmitting', true)
+    store.commit('setIsSubmitting', true)
     return config
   },
   function (error) {
@@ -18,14 +18,14 @@ api.interceptors.request.use(
 )
 api.interceptors.response.use(
   function (response) {
-    store.commit('auth/setIsSubmitting', false)
-    store.commit('auth/setResponseError', null)
+    store.commit('setIsSubmitting', false)
+    store.commit('setResponseError', null)
     return response
   },
   function (error) {
     const responseError = error.response ? error.response.data : { error: 'Network Error' }
-    store.commit('auth/setResponseError', responseError.error)
-    store.commit('auth/setIsSubmitting', false)
+    store.commit('setResponseError', responseError.error)
+    store.commit('setIsSubmitting', false)
     return Promise.reject(error)
   }
 )

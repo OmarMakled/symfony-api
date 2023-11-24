@@ -82,7 +82,10 @@ export default {
     Slider
   },
   computed: {
-    ...mapGetters('auth', ['user', 'isSubmitting']),
+    ...mapGetters({
+      user: 'auth/user',
+      isSubmitting: 'isSubmitting',
+    }),
   },
   methods: {
     ...mapActions('auth', ['logout', 'deletePhoto']),

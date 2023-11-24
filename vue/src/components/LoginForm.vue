@@ -51,20 +51,27 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('auth', ['isSubmitting', 'isAdmin']),
+    ...mapGetters({
+      isAdmin: 'auth/isAdmin',
+      isSubmitting: 'isSubmitting'
+    }),  
   },
   methods: {
     ...mapActions('auth', ['login', 'profile']),
     async submit(){
-      await this.login({
-        password: this.password, 
-        email: this.email, 
-      })
-      await this.profile()
-      if (this.isAdmin){
-        router.push('/admin')
-      }else {
-        router.push('/profile')
+      try{
+        await this.login({
+          password: this.password, 
+          email: this.email, 
+        })
+        await this.profile()
+        if (this.isAdmin){
+          router.push('/admin')
+        }else {
+          router.push('/profile')
+        }
+      }catch(err){
+        console.log(err)
       }
     }
   },

@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import router from './router'
 import store from './store'
 import vuetify from './vuetify'
-import App from './components/App.vue'
+import App from './App.vue'
 import SubmitButton from './components/SubmitButton.vue'
 import ErrorList from './components/ErrorList.vue'
 

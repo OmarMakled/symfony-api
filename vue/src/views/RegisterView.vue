@@ -22,7 +22,7 @@ export default {
     RegisterForm,
   },
   computed: {
-    ...mapGetters('auth', ['responseError']),
+    ...mapGetters(['responseError']),
   }
 }
 </script>

@@ -2,9 +2,7 @@ import * as api from '@/api'
 
 const state = {
   token: localStorage.getItem('token') || null,
-  user: JSON.parse(localStorage.getItem('user')) || null,
-  isSubmitting: false,
-  responseError: null,
+  user: JSON.parse(localStorage.getItem('user')) || null
 }
 
 const mutations = {
@@ -17,12 +15,6 @@ const mutations = {
     state.user = null
     localStorage.removeItem('token')
     localStorage.removeItem('user')
-  },
-  setIsSubmitting(state, isSubmitting) {
-    state.isSubmitting = isSubmitting
-  },
-  setResponseError(state, responseError) {
-    state.responseError = responseError
   },
   setUser(state, user) {
     state.user = user
@@ -47,6 +39,7 @@ const actions = {
       commit('setToken', token)
     } catch({message}) {
       console.error('Fail:', message)
+      throw error
     }
   },
   async register({ commit }, { firstName, lastName, email, password, avatar, photos }) {
@@ -104,32 +97,12 @@ const actions = {
       console.error('Fail:', error.message)
       throw error
     }
-  },
-  async getUsers({state}, { page }) {
-    try {
-      const response = await api.getUsers(state.token, { page })
-      return response.data
-    } catch(error) {
-      console.error('Fail:', error.message)
-      throw error
-    }
-  },
-  async getUser({state}, { userId }) {
-    try {
-      const response = await api.getUser(state.token, { userId })
-      const { user } = response.data
-      return user
-    } catch(error) {
-      console.error('Fail:', error.message)
-      throw error
-    }
   }
 }
 
 const getters = {
   isAuth: state => !!state.token,
-  responseError: state => state.responseError,
-  isSubmitting: state => state.isSubmitting,
+  token: state => state.token,
   user: state => state.user,
   isAdmin: state => state.user && state.user.isAdmin,
 }

@@ -38,7 +38,7 @@ export default {
         }
     },
   computed: {
-    ...mapGetters('auth', ['isSubmitting']),
+    ...mapGetters(['isSubmitting']),
   },
   methods: {
     onDelete(id){
