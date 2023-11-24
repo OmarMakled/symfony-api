@@ -111,7 +111,8 @@ const getters = {
   isAuth: state => !!state.token,
   responseError: state => state.responseError,
   isSubmitting: state => state.isSubmitting,
-  user: state => state.user
+  user: state => state.user,
+  isAdmin: state => state.user && state.user.isAdmin,
 }
 
 export default {

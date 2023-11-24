@@ -51,7 +51,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('auth', ['isSubmitting']),
+    ...mapGetters('auth', ['isSubmitting', 'isAdmin']),
   },
   methods: {
     ...mapActions('auth', ['login', 'profile']),
@@ -61,7 +61,11 @@ export default {
         email: this.email, 
       })
       await this.profile()
-      router.push('/profile')
+      if (this.isAdmin){
+        router.push('/admin')
+      }else {
+        router.push('/profile')
+      }
     }
   },
 }

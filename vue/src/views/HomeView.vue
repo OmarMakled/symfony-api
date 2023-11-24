@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      Vue
+      Main Home
     </v-row>
   </v-container>
 </template>

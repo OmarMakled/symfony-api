@@ -31,12 +31,30 @@
       >
         Login
       </v-btn>
+      <v-btn
+        v-if="user && isAdmin"
+        x-large
+        rounded
+        to="/admin/users"
+        class="mx-2"
+      >
+        Users
+      </v-btn>
       <v-spacer />
       <v-btn
-        v-if="isAuth && user"
+        v-if="user && !isAdmin"
         x-large
         rounded
         to="/profile"
+        class="mx-2"
+      > 
+        Hi {{ user.first_name }}!
+      </v-btn>
+      <v-btn
+        v-if="user && isAdmin"
+        x-large
+        rounded
+        to="/admin/profile"
         class="mx-2"
       > 
         Hi {{ user.first_name }}!
@@ -56,7 +74,7 @@ import { mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapGetters('auth', ['isAuth', 'user']),
+    ...mapGetters('auth', ['isAuth', 'user', 'isAdmin']),
   }
 }
 </script>
