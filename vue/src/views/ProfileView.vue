@@ -58,12 +58,10 @@
       >
         <v-card flat>
           <v-card-text>
-            <v-row v-if="user.photos && user.photos.length > 0">
-              <v-col
+            <v-carousel v-if="user.photos">
+              <v-carousel-item
                 v-for="(photo, index) in user.photos"
                 :key="index"
-                class="d-flex child-flex"
-                cols="4"
               >
                 <v-img
                   :src="photo.url"
@@ -72,8 +70,8 @@
                   cover
                   class="bg-grey-lighten-2"
                 />
-              </v-col>
-            </v-row>
+              </v-carousel-item>
+            </v-carousel>
             <v-row v-else>
               <v-col>
                 <p>No photos available.</p>
