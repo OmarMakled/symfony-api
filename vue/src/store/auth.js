@@ -27,7 +27,13 @@ const mutations = {
   setUser(state, user) {
     state.user = user
     localStorage.setItem('user', JSON.stringify(user))
-  }
+  },
+  removePhotoFromUser(state, id) {
+    const index = state.user.photos.findIndex(photo => photo.id === id);
+    if (index !== -1) {
+      state.user.photos.splice(index, 1);
+    }
+  },
 }
 
 const actions = {
@@ -85,6 +91,15 @@ const actions = {
       const response = await api.upload(state.token, formData)
       const { user } = response.data
       commit('setUser', user)
+    } catch(error) {
+      console.error('Fail:', error.message)
+      throw error
+    }
+  },
+  async deletePhoto({commit, state}, id) {
+    try {
+      await api.deletePhoto(state.token, id)
+      commit('removePhotoFromUser', id)
     } catch(error) {
       console.error('Fail:', error.message)
       throw error

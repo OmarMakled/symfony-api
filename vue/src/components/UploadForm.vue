@@ -32,8 +32,8 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data() {
     return {
-      photos: null,
-      photoRules: [v => (!this.photos || this.photos.length >= 4) || 'Please upload at least 4 images'],
+      photos: [],
+      photoRules: [v => this.photos.length >= 4 || 'Please upload at least 4 images'],
     }
   },
   computed: {

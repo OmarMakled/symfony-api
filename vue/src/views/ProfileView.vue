@@ -58,7 +58,7 @@
       >
         <v-card flat>
           <v-card-text>
-            <v-carousel v-if="user.photos">
+            <v-carousel v-if="user.photos && user.photos.length > 0">
               <v-carousel-item
                 v-for="(photo, index) in user.photos"
                 :key="index"
@@ -70,6 +70,9 @@
                   cover
                   class="bg-grey-lighten-2"
                 />
+                <v-btn icon class="delete-button" @click="deletePhoto(photo.id)" :disabled="isSubmitting">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
               </v-carousel-item>
             </v-carousel>
             <v-row v-else>
@@ -98,10 +101,10 @@ export default {
     UploadForm
   },
   computed: {
-    ...mapGetters('auth', ['user']),
+    ...mapGetters('auth', ['user', 'isSubmitting']),
   },
   methods: {
-    ...mapActions('auth', ['logout']),
+    ...mapActions('auth', ['logout', 'deletePhoto']),
     onLogout(){
       this.logout()
       router.push('/')
@@ -109,4 +112,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.delete-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+</style>
   
