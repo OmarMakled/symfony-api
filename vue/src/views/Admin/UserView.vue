@@ -6,7 +6,7 @@
     >
       <v-card-text v-if="user">
         {{ userId }} {{ user }}
-        <Slider :user="user" @delete="deletePhoto"/>
+        <Slider :user="user" @delete="onDeletePhoto"/>
       </v-card-text>
     </v-card>
   </v-container>
@@ -32,12 +32,16 @@ export default {
     },
   },
   methods: {
-    ...mapActions('admin', ['getUser']),
-    async fetch(){
-      this.user =  await this.getUser({userId: this.userId})
+    ...mapActions('admin', ['getUser', 'deletePhoto']),
+    async onDeletePhoto(photoId){
+      await this.deletePhoto(photoId)
+      const index = this.user.photos.findIndex(photo => photo.id === photoId)
+      if (index !== -1) {
+        this.user.photos.splice(index, 1)
+      }
     },
-    deletePhoto(id){
-      console.log('delete', id)
+    async fetch(){
+      this.user =  await this.getUser(this.userId)
     }
   },
   mounted() {

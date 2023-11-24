@@ -1,4 +1,4 @@
-import * as api from '@/api'
+import { authApi as api} from '@/api'
 
 const state = {
   token: localStorage.getItem('token') || null,

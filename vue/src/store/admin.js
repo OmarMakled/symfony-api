@@ -1,4 +1,4 @@
-import * as api from '@/api'
+import { adminApi as api} from '@/api'
 
 const state = {
 }
@@ -16,11 +16,19 @@ const actions = {
       throw error
     }
   },
-  async getUser({rootGetters}, { userId }) {
+  async getUser({rootGetters}, userId) {
     try {
-      const response = await api.getUser(rootGetters['auth/token'], { userId })
+      const response = await api.getUser(rootGetters['auth/token'], userId)
       const { user } = response.data
       return user
+    } catch(error) {
+      console.error('Fail:', error.message)
+      throw error
+    }
+  },
+  async deletePhoto({rootGetters}, photoId) {
+    try {
+      await api.deletePhoto(rootGetters['auth/token'], photoId)
     } catch(error) {
       console.error('Fail:', error.message)
       throw error
