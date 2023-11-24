@@ -58,33 +58,7 @@
       >
         <v-card flat>
           <v-card-text>
-            <v-carousel v-if="user.photos && user.photos.length > 0">
-              <v-carousel-item
-                v-for="(photo, index) in user.photos"
-                :key="index"
-              >
-                <v-img
-                  :src="photo.url"
-                  :alt="photo.name"
-                  aspect-ratio="1"
-                  cover
-                  class="bg-grey-lighten-2"
-                />
-                <v-btn
-                  icon
-                  class="delete-button"
-                  :disabled="isSubmitting"
-                  @click="deletePhoto(photo.id)"
-                >
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-              </v-carousel-item>
-            </v-carousel>
-            <v-row v-else>
-              <v-col>
-                <p>No photos available.</p>
-              </v-col>
-            </v-row>
+            <Slider :user="user" @delete="deletePhoto"/>
           </v-card-text>
         </v-card>
       </v-col>
@@ -100,10 +74,12 @@
 import { mapActions, mapGetters } from 'vuex'
 import router from '../router'
 import UploadForm from '../components/UploadForm.vue'
+import Slider from '../components/Slider.vue'
 
 export default {
   components: {
-    UploadForm
+    UploadForm,
+    Slider
   },
   computed: {
     ...mapGetters('auth', ['user', 'isSubmitting']),

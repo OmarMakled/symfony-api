@@ -4,8 +4,9 @@
       flat
       title="Users"
     >
-      <v-card-text>
+      <v-card-text v-if="user">
         {{ userId }} {{ user }}
+        <Slider :user="user" @delete="deletePhoto"/>
       </v-card-text>
     </v-card>
   </v-container>
@@ -14,8 +15,12 @@
   
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import Slider from '../../components/Slider.vue';
 
 export default {
+  components: {
+    Slider
+  },
   data() {
     return {
       user: null,
@@ -30,6 +35,9 @@ export default {
     ...mapActions('auth', ['getUser']),
     async fetch(){
       this.user =  await this.getUser({userId: this.userId})
+    },
+    deletePhoto(id){
+      console.log('delete', id)
     }
   },
   mounted() {
