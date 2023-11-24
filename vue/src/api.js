@@ -44,3 +44,8 @@ export const getUsers = (token, { page }) => api.get(`/admin/users?page=${page}`
     Authorization: `Bearer ${token}`
   }
 })
+export const getUser = (token, { userId }) => api.get(`/admin/users/${userId}`, {
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+})

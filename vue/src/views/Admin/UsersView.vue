@@ -43,10 +43,13 @@
               </td>
               <td>
                 <v-btn
-                  text
-                  @click="viewPhotos(user)"
-                >
-                  View Photos
+                  small
+                  flat
+                  rounded
+                  :to="{ name: 'admin-show-user', params: { userId: user.id } }"
+                  class="mx-2"
+                > 
+                  Show
                 </v-btn>
               </td>
             </tr>

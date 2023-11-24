@@ -113,6 +113,16 @@ const actions = {
       console.error('Fail:', error.message)
       throw error
     }
+  },
+  async getUser({state}, { userId }) {
+    try {
+      const response = await api.getUser(state.token, { userId })
+      const { user } = response.data
+      return user
+    } catch(error) {
+      console.error('Fail:', error.message)
+      throw error
+    }
   }
 }
 
