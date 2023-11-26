@@ -50,8 +50,8 @@ export const authApi = {
         Authorization: `Bearer ${token}`,
       },
     }),
-  update: (token, userData) =>
-    api.post('/users/update', userData, {
+  update: (token, data) =>
+    api.put('/users', data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

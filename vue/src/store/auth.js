@@ -71,14 +71,14 @@ const actions = {
     { firstName, lastName, email, password, avatar },
   ) {
     try {
-      const formData = new FormData();
-      formData.append('first_name', firstName);
-      formData.append('last_name', lastName);
-      formData.append('email', email);
-      formData.append('password', password);
-      formData.append('avatar', avatar);
-
-      const response = await api.update(state.token, formData);
+      const data = {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password,
+        avatar,
+      };
+      const response = await api.update(state.token, data);
       const { user } = response.data;
       commit('setUser', user);
     } catch (error) {

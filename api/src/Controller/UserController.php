@@ -171,7 +171,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/api/users/update", methods={"PUT", "POST"})
+     * @Route("/api/users", methods={"PUT"})
      * @return JsonResponse
      */
     public function update(Request $request, ValidatorService $validator, UserUpdateService $userService): JsonResponse
