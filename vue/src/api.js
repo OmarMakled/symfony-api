@@ -85,4 +85,8 @@ export const adminApi = {
     api.post(`/admin/users/${userId}/photos`, formData, {
       headers: { Authorization: `Bearer ${token}` },
     }),
+  updateUser: (token, { userId, data }) =>
+    api.put(`/admin/users/${userId}`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
 };

@@ -9,7 +9,7 @@
       </v-col>
       <v-col cols="12" md="9">
         <PhotoSlider :user="user" class="mb-5" @onDelete="onDeletePhoto" />
-        <UpdateForm :user="user" class="mb-5" @onSubmit="update" />
+        <UpdateForm :user="user" class="mb-5" @onSubmit="onUpdateUser" />
         <UploadForm :user="user" class="mb-5" @onSubmit="onUploadPhotos" />
       </v-col>
     </v-row>
@@ -46,6 +46,7 @@ export default {
       'deletePhoto',
       'deleteUser',
       'uploadPhotos',
+      'updateUser',
     ]),
     async onDeletePhoto(photoId) {
       await this.deletePhoto(photoId);
@@ -63,6 +64,13 @@ export default {
     },
     async onUploadPhotos(photos) {
       const user = await this.uploadPhotos({ userId: this.userId, photos });
+      this.user = user;
+    },
+    async onUpdateUser(updateUser) {
+      const user = await this.updateUser({
+        userId: this.userId,
+        ...updateUser,
+      });
       this.user = user;
     },
   },

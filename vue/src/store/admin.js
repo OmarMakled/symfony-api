@@ -60,6 +60,29 @@ const actions = {
       throw error;
     }
   },
+  async updateUser(
+    { rootGetters },
+    { userId, firstName, lastName, email, password, avatar },
+  ) {
+    try {
+      const data = {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password,
+        avatar,
+      };
+      const response = await api.updateUser(rootGetters['auth/token'], {
+        userId,
+        data,
+      });
+      const { user } = response.data;
+      return user;
+    } catch (error) {
+      console.error('Fail:', error.message);
+      throw error;
+    }
+  },
 };
 
 const getters = {};
