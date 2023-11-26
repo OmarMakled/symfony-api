@@ -6,7 +6,7 @@ use App\Service\Validator\Constraints as CustomAssert;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class UserDTO
+class UserRegisterDTO
 {
     public const DEFAULT_AVATAR = "http://localhost:8080/uploads/avatar.jpg";
 

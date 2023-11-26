@@ -2,10 +2,10 @@
 
 namespace App\Command;
 
-use App\DTO\UserDTO;
+use App\DTO\UserRegisterDTO;
 use App\Service\User\AdminRegistrationService;
 use App\Service\Validator\ValidatorService;
-use App\Service\User\UserRegistrationService;
+use App\Service\User\UserRegisterService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -17,7 +17,7 @@ class CreateAdminCommand extends Command
     protected static $defaultName = 'app:create-admin';
     protected static $defaultDescription = 'Add a short description for your command';
 
-    public function __construct(private readonly UserRegistrationService $userRegistrationService, private readonly AdminRegistrationService $adminRegistrationService, private readonly ValidatorService $validatorService)
+    public function __construct(private readonly UserRegisterService $userRegistrationService, private readonly AdminRegistrationService $adminRegistrationService, private readonly ValidatorService $validatorService)
     {
         parent::__construct();
     }
@@ -41,7 +41,7 @@ class CreateAdminCommand extends Command
                         ->setHiddenFallback(false);
         $password = $io->askQuestion($passwordQuestion);
 
-        $userDTO = UserDTO::createFromArray(compact('firstName', 'lastName', 'email', 'password'));
+        $userDTO = UserRegisterDTO::createFromArray(compact('firstName', 'lastName', 'email', 'password'));
         if (!$this->validatorService->isValid($userDTO)) {
             $output->write(json_encode($this->validatorService->getErrors()));
             return 1;

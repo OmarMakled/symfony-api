@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\DTO\UserDTO;
+use App\DTO\UserRegisterDTO;
 use App\EventListener\ExceptionListener;
 use App\EventListener\ResponseListener;
 use App\Resource\UserResource;
@@ -10,7 +10,7 @@ use OpenApi\Annotations as OA;
 use App\Service\User\UserLoginService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Service\Validator\ValidatorService;
-use App\Service\User\UserRegistrationService;
+use App\Service\User\UserRegisterService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -81,9 +81,9 @@ class UserController extends AbstractController
      *     security={}
      * )
      */
-    public function register(Request $request, ValidatorService $validator, UserRegistrationService $userRegistrationService): JsonResponse
+    public function register(Request $request, ValidatorService $validator, UserRegisterService $userRegistrationService): JsonResponse
     {
-        $userDTO = UserDTO::createFromRequest($request);
+        $userDTO = UserRegisterDTO::createFromRequest($request);
         if (!$validator->isValid($userDTO)) {
             return new JsonResponse(['error' => $validator->getErrors()], Response::HTTP_BAD_REQUEST);
         }
