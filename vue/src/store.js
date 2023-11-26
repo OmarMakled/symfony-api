@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import auth from './store/auth';
+import admin from './store/admin';
 
 const state = {
   isSubmitting: false,
@@ -23,6 +24,7 @@ const getters = {
 const store = createStore({
   modules: {
     auth,
+    admin,
   },
   state,
   mutations,

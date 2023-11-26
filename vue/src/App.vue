@@ -8,8 +8,26 @@
       <v-btn v-if="!isAuth" x-large rounded to="/login" class="mx-2">
         Login
       </v-btn>
+      <v-btn
+        v-if="user && isAdmin"
+        x-large
+        rounded
+        to="/admin/users"
+        class="mx-2"
+      >
+        Users
+      </v-btn>
       <v-spacer />
       <v-btn v-if="user && !isAdmin" x-large rounded to="/profile" class="mx-2">
+        Hi {{ user.first_name }}!
+      </v-btn>
+      <v-btn
+        v-if="user && isAdmin"
+        x-large
+        rounded
+        to="/admin/profile"
+        class="mx-2"
+      >
         Hi {{ user.first_name }}!
       </v-btn>
     </v-app-bar>

@@ -20,6 +20,12 @@ const mutations = {
     state.user = user;
     localStorage.setItem('user', JSON.stringify(user));
   },
+  removePhotoFromUser(state, id) {
+    const index = state.user.photos.findIndex((photo) => photo.id === id);
+    if (index !== -1) {
+      state.user.photos.splice(index, 1);
+    }
+  },
 };
 
 const actions = {
@@ -60,6 +66,26 @@ const actions = {
       throw error;
     }
   },
+  async update(
+    { commit, state },
+    { firstName, lastName, email, password, avatar },
+  ) {
+    try {
+      const data = {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password,
+        avatar,
+      };
+      const response = await api.update(state.token, data);
+      const { user } = response.data;
+      commit('setUser', user);
+    } catch (error) {
+      console.error('Fail:', error.message);
+      throw error;
+    }
+  },
   logout({ commit }) {
     commit('clearToken');
   },
@@ -70,6 +96,29 @@ const actions = {
       commit('setUser', user);
     } catch ({ message }) {
       console.error('Fail:', message);
+    }
+  },
+  async upload({ commit, state }, photos) {
+    try {
+      const formData = new FormData();
+      for (const photo of photos) {
+        formData.append('photos[]', photo);
+      }
+      const response = await api.upload(state.token, formData);
+      const { user } = response.data;
+      commit('setUser', user);
+    } catch (error) {
+      console.error('Fail:', error.message);
+      throw error;
+    }
+  },
+  async deletePhoto({ commit, state }, id) {
+    try {
+      await api.deletePhoto(state.token, id);
+      commit('removePhotoFromUser', id);
+    } catch (error) {
+      console.error('Fail:', error.message);
+      throw error;
     }
   },
 };

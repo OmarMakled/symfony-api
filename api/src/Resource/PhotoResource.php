@@ -15,6 +15,15 @@ use OpenApi\Annotations as OA;
  */
 class PhotoResource
 {
+    public static function toArrayCollection(array $photos): array
+    {
+        $result = [];
+        foreach ($photos as $photo) {
+            $result['photos'][] = self::toArray($photo)['photo'];
+        }
+        return $result;
+    }
+
     public static function toArray(Photo $photo): array
     {
         return [

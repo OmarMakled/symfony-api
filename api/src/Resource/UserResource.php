@@ -31,6 +31,15 @@ use App\Entity\User;
  */
 class UserResource
 {
+    public static function toArrayCollection(array $users): array
+    {
+        $result = ['users' => []];
+        foreach ($users as $user) {
+            $result['users'][] = self::toArray($user)['user'];
+        }
+        return $result;
+    }
+
     public static function toArray(User $user): array
     {
         return [
@@ -45,6 +54,7 @@ class UserResource
                 'created_at' => $user->getCreatedAt()->format('Y-m-d H:i:s'),
                 'updated_at' => $user->getUpdatedAt()->format('Y-m-d H:i:s'),
                 'photos' => self::getPhotos($user),
+                'roles' => $user->getRoles(),
                 'isAdmin' => $user->isAdmin()
             ]
         ];

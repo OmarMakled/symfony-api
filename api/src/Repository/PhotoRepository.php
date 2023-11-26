@@ -32,4 +32,16 @@ class PhotoRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete(Photo $entity, bool $flush = true): void
+    {
+        $this->_em->remove($entity);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
 }

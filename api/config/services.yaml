@@ -38,6 +38,9 @@ services:
     App\EventListener\ExceptionListener:
         tags:
             - { name: 'kernel.event_listener', event: 'kernel.exception', method: 'onKernelException' }
+    App\EventListener\RequestListener:
+        tags: 
+            - { name: kernel.event_listener, event: kernel.request }
     App\EventListener\ResponseListener:
         tags:
             - { name: 'kernel.event_subscriber' }

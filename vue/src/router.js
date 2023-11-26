@@ -28,6 +28,33 @@ const router = createRouter({
       component: () => import('./views/ProfileView.vue'),
     },
     {
+      path: '/admin',
+      name: 'admin',
+      meta: { requiresAuth: true, requiresAdmin: true },
+      component: () => import('./views/Admin/HomeView.vue'),
+      children: [
+        {
+          path: 'profile',
+          name: 'admin-profile',
+          meta: { requiresAuth: true, requiresAdmin: true },
+          component: () => import('./views/Admin/ProfileView.vue'),
+        },
+        {
+          path: 'users',
+          name: 'admin-users',
+          meta: { requiresAuth: true, requiresAdmin: true },
+          component: () => import('./views/Admin/UsersView.vue'),
+        },
+        {
+          path: 'users/:userId',
+          name: 'admin-show-user',
+          meta: { requiresAuth: true, requiresAdmin: true },
+          component: () => import('./views/Admin/UserView.vue'),
+          props: true,
+        },
+      ],
+    },
+    {
       path: '/success',
       name: 'success',
       meta: { requiresAuth: true, requiresUser: true },

@@ -104,6 +104,7 @@ class User implements UserInterface
      */
     public function preUpdate(): void
     {
+        $this->fullName = $this->lastName . ' ' . $this->firstName;
         $this->updatedAt = new DateTimeImmutable();
     }
 

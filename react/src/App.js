@@ -9,18 +9,28 @@ import {
 import { AppBar, Toolbar, Container, Button } from '@mui/material';
 import { useSelector } from 'react-redux';
 
-import HomeView from './views/HomeView';
-import ProfileView from './views/ProfileView';
-import LoginView from './views/LoginView';
-import RegisterView from './views/RegisterView';
-import SuccessView from './views/SuccessView';
-
+import {
+  HomeView,
+  ProfileView,
+  LoginView,
+  RegisterView,
+  SuccessView,
+} from './views';
+import { UsersView } from './views/admin';
+import {
+  UserToolbarButtons,
+  GuestToolbarButtons,
+  AdminToolbarButtons,
+} from './components/Auth';
 import './style.css';
 
 const App = () => {
   const user = useSelector((state) => state.auth.user);
-  const AuthRoutes = () => {
-    return user ? <Outlet /> : <Navigate to="/" />;
+  const UserRoutes = () => {
+    return user && !user.isAdmin ? <Outlet /> : <Navigate to="/" />;
+  };
+  const AdminRoutes = () => {
+    return user && user.isAdmin ? <Outlet /> : <Navigate to="/" />;
   };
   const GuestRoutes = () => {
     return !user ? <Outlet /> : <Navigate to="/" />;
@@ -38,40 +48,9 @@ const App = () => {
           >
             Home
           </Button>
-          {!user && (
-            <>
-              <Button
-                component={NavLink}
-                to="/login"
-                end
-                activeclassname="active"
-                color="inherit"
-              >
-                Login
-              </Button>
-              <Button
-                component={NavLink}
-                to="/register"
-                end
-                activeclassname="active"
-                color="inherit"
-              >
-                Register
-              </Button>
-            </>
-          )}
-          {user && (
-            <Button
-              component={NavLink}
-              to="/profile"
-              end
-              color="inherit"
-              activeclassname="active"
-              sx={{ marginLeft: 'auto' }}
-            >
-              {user.first_name}'s Profile
-            </Button>
-          )}
+          {!user && <GuestToolbarButtons />}
+          {user && !user.isAdmin && <UserToolbarButtons user={user} />}
+          {user && user.isAdmin && <AdminToolbarButtons user={user} />}
         </Toolbar>
       </AppBar>
       <Container sx={{ paddingBottom: 4 }}>
@@ -81,7 +60,10 @@ const App = () => {
             <Route path="login" element={<LoginView />} />
             <Route path="register" element={<RegisterView />} />
           </Route>
-          <Route element={<AuthRoutes />}>
+          <Route element={<AdminRoutes />}>
+            <Route path="/admin/users" element={<UsersView />} />
+          </Route>
+          <Route element={<UserRoutes />}>
             <Route path="profile" element={<ProfileView />} />
             <Route path="/success" element={<SuccessView />} />
           </Route>

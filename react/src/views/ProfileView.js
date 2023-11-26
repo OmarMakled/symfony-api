@@ -49,6 +49,11 @@ const ProfileView = () => {
                   Email:
                 </Typography>
                 <Typography variant="subtitle1">{user.email}</Typography>
+                <Typography variant="subtitle1">
+                  {user.roles.map((role) => (
+                    <span key={role}>{role}</span>
+                  ))}
+                </Typography>
               </CardContent>
               <CardActions>
                 <Button color="primary" onClick={handleLogout}>

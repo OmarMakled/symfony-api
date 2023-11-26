@@ -1,5 +1,3 @@
-// api.js
-
 import axios from 'axios';
 import store from './store';
 
@@ -43,5 +41,44 @@ export const authApi = {
   upload: (token, userData) =>
     api.post('/photos', userData, {
       headers: { Authorization: `Bearer ${token}` },
+    }),
+  deletePhoto: (token, photoId) =>
+    api.delete(`/photos/${photoId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  update: (token, data) =>
+    api.put('/users', data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+};
+
+export const adminApi = {
+  getUsers: (token, { page }) =>
+    api.get(`/admin/users?page=${page}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  getUser: (token, userId) =>
+    api.get(`/admin/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  deletePhoto: (token, photoId) =>
+    api.delete(`/admin/photos/${photoId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  deleteUser: (token, userId) =>
+    api.delete(`/admin/users/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     }),
 };
