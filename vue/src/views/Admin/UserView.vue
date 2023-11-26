@@ -1,51 +1,34 @@
 <template>
   <v-container>
-    <v-card v-if="user" flat :title="user.full_name" class="mb-4">
-      <v-card-subtitle>Email: {{ user.email }}</v-card-subtitle>
-      <v-card-text>
-        <v-list>
-          <v-list-item>
-            <v-list-item-content
-              >First Name: {{ user.first_name }}</v-list-item-content
-            >
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-content
-              >Last Name: {{ user.last_name }}</v-list-item-content
-            >
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-content
-              >Is Active:
-              {{ user.is_active ? 'Yes' : 'No' }}</v-list-item-content
-            >
-          </v-list-item>
-        </v-list>
-      </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-subtitle>Roles: {{ user.roles.join(', ') }}</v-card-subtitle>
-
-      <v-card-actions>
-        <v-btn @click="onDeleteUser(user.id)">Delete</v-btn>
-      </v-card-actions>
-    </v-card>
-    <v-card v-if="user" flat class="mb-4" title="Users">
-      <v-card-text>
-        <Slider :user="user" @delete="onDeletePhoto" />
-      </v-card-text>
-    </v-card>
+    <v-row v-if="user">
+      <v-col cols="12" md="3">
+        <UserCard :user="user">
+          <v-spacer />
+          <v-btn color="primary" @click="onDeleteUser"> Delete </v-btn>
+        </UserCard>
+      </v-col>
+      <v-col cols="12" md="9">
+        <PhotoSlider :user="user" class="mb-5" @onDelete="onDeletePhoto" />
+        <UpdateForm :user="user" class="mb-5" @onSubmit="update" />
+        <UploadForm :user="user" class="mb-5" @onSubmit="upload" />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
 import { mapActions } from 'vuex';
-import Slider from '../../components/PhotoSlider.vue';
+import UserCard from '../../components/UserCard.vue';
+import UpdateForm from '../../components/UpdateForm.vue';
+import UploadForm from '../../components/UploadForm.vue';
+import PhotoSlider from '../../components/PhotoSlider.vue';
 
 export default {
   components: {
-    Slider,
+    UserCard,
+    UpdateForm,
+    UploadForm,
+    PhotoSlider,
   },
   data() {
     return {
@@ -66,8 +49,8 @@ export default {
         this.user.photos.splice(index, 1);
       }
     },
-    async onDeleteUser(userId) {
-      await this.deleteUser(userId);
+    async onDeleteUser() {
+      await this.deleteUser(this.user.id);
       this.$router.go(-1);
     },
     async fetch() {

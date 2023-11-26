@@ -14,7 +14,7 @@
             icon
             class="delete-button"
             :disabled="isSubmitting"
-            @click="onDelete(photo.id)"
+            @click="$emit('onDelete', photo.id)"
           >
             <v-icon>mdi-delete</v-icon>
           </v-btn>
@@ -39,11 +39,6 @@ export default {
   },
   computed: {
     ...mapGetters(['isSubmitting']),
-  },
-  methods: {
-    onDelete(id) {
-      this.$emit('delete', id);
-    },
   },
 };
 </script>

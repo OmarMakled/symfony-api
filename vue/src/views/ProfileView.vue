@@ -8,7 +8,7 @@
         </UserCard>
       </v-col>
       <v-col cols="12" md="9">
-        <PhotoSlider :user="user" class="mb-5" @delete="deletePhoto" />
+        <PhotoSlider :user="user" class="mb-5" @onDelete="deletePhoto" />
         <UpdateForm :user="user" class="mb-5" @onSubmit="update" />
         <UploadForm :user="user" class="mb-5" @onSubmit="upload" />
       </v-col>
