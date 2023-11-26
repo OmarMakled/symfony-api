@@ -43,14 +43,9 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="9">
-        <v-card flat>
-          <v-card-text>
-            <Slider :user="user" @delete="deletePhoto" />
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12">
-        <UploadForm />
+        <Slider :user="user" class="mb-5" @delete="deletePhoto" />
+        <UpdateForm class="mb-5" />
+        <UploadForm class="mb-5" />
       </v-col>
     </v-row>
   </v-container>
@@ -58,11 +53,13 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import router from '../router';
+import UpdateForm from '../components/UpdateForm.vue';
 import UploadForm from '../components/UploadForm.vue';
 import Slider from '../components/PhotoSlider.vue';
 
 export default {
   components: {
+    UpdateForm,
     UploadForm,
     Slider,
   },

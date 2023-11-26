@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\DTO\UserRegisterDTO;
+use App\DTO\UserUpdateDTO;
 use App\EventListener\ExceptionListener;
 use App\EventListener\ResponseListener;
 use App\Resource\UserResource;
@@ -11,6 +12,7 @@ use App\Service\User\UserLoginService;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Service\Validator\ValidatorService;
 use App\Service\User\UserRegisterService;
+use App\Service\User\UserUpdateService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -166,5 +168,19 @@ class UserController extends AbstractController
         $user = $this->getUser();
 
         return new JsonResponse(UserResource::toArray($user));
+    }
+
+    /**
+     * @Route("/api/users/update", methods={"PUT", "POST"})
+     * @return JsonResponse
+     */
+    public function update(Request $request, ValidatorService $validator, UserUpdateService $userService): JsonResponse
+    {
+        $userDTO = UserUpdateDTO::createFromRequest($request);
+        if (!$validator->isValid($userDTO)) {
+            return new JsonResponse(['error' => $validator->getErrors()], Response::HTTP_BAD_REQUEST);
+        }
+        $user = $userService->update($this->getUser(), $userDTO);
+        return new JsonResponse(UserResource::toArray($user), Response::HTTP_OK);
     }
 }

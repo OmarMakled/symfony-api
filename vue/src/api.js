@@ -50,6 +50,12 @@ export const authApi = {
         Authorization: `Bearer ${token}`,
       },
     }),
+  update: (token, userData) =>
+    api.post('/users/update', userData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
 };
 
 export const adminApi = {

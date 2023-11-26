@@ -59,6 +59,16 @@ class UserRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findByEmailExcludingCurrentId(string $email, int $currentUserId)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.email = :email AND u.id != :currentUserId')
+            ->setParameter('email', $email)
+            ->setParameter('currentUserId', $currentUserId)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /**
      * Paginate users.
      *

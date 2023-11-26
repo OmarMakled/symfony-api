@@ -66,6 +66,26 @@ const actions = {
       throw error;
     }
   },
+  async update(
+    { commit, state },
+    { firstName, lastName, email, password, avatar },
+  ) {
+    try {
+      const formData = new FormData();
+      formData.append('first_name', firstName);
+      formData.append('last_name', lastName);
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('avatar', avatar);
+
+      const response = await api.update(state.token, formData);
+      const { user } = response.data;
+      commit('setUser', user);
+    } catch (error) {
+      console.error('Fail:', error.message);
+      throw error;
+    }
+  },
   logout({ commit }) {
     commit('clearToken');
   },
