@@ -4,22 +4,19 @@ namespace App\Tests\Unit\Repository;
 
 use App\Entity\Photo;
 use App\Factory\UserFactory;
-use App\Tests\RollBackTrait;
 use App\Factory\PhotoFactory;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\BaseController;
 
-class PhotoRepositoryTest extends WebTestCase
+class PhotoRepositoryTest extends BaseController
 {
-    use RollBackTrait;
-
     public function testAdd(): void
     {
-        $em = self::$container->get('doctrine')->getManager();
-        $photoRepository = $em->getRepository(Photo::class);
+        $photoRepository = $this->em->getRepository(Photo::class);
+        $count = $photoRepository->count([]);
 
         $photo = PhotoFactory::create(['user' => UserFactory::create()]);
         $photoRepository->add($photo);
 
-        $this->assertCount(1, $photoRepository->findAll());
+        $this->assertEquals(++$count, $photoRepository->count([]));
     }
 }

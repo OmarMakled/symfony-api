@@ -14,15 +14,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import RegisterForm from "@/components/RegisterForm.vue"
+import { mapGetters } from 'vuex';
+import RegisterForm from '@/components/RegisterForm.vue';
 
 export default {
   components: {
     RegisterForm,
   },
   computed: {
-    ...mapGetters('auth', ['responseError']),
-  }
-}
+    ...mapGetters(['responseError']),
+  },
+};
 </script>

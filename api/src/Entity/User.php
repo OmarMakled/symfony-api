@@ -17,6 +17,9 @@ use App\Repository\UserRepository;
  */
 class User implements UserInterface
 {
+    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -72,9 +75,14 @@ class User implements UserInterface
     private DateTimeImmutable $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="user", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $photos;
+
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $roles = [];
 
     public function __construct()
     {
@@ -206,7 +214,13 @@ class User implements UserInterface
 
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        $roles = $this->roles;
+
+        if (empty($roles)) {
+            $roles[] = self::ROLE_USER;
+        }
+
+        return array_unique($roles);
     }
 
     public function getSalt()
@@ -239,5 +253,17 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public function setRoles(?array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array(self::ROLE_ADMIN, $this->getRoles(), true);
     }
 }

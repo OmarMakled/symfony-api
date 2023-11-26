@@ -1,12 +1,9 @@
 <template>
   <v-container>
-    <v-row>
-      Vue
-    </v-row>
+    <v-row> Main Home </v-row>
   </v-container>
 </template>
 
 <script>
-export default {
-}
+export default {};
 </script>

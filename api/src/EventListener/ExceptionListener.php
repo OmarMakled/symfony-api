@@ -2,10 +2,12 @@
 
 namespace App\EventListener;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ExceptionListener
 {
@@ -20,8 +22,22 @@ class ExceptionListener
             [
                 'error' => $this->translator->trans($exception->getMessage(), [], 'messages')
             ],
-            $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500
+            $this->getExceptionCode($event)
         );
         $event->setResponse($response);
+    }
+
+    private function getExceptionCode(ExceptionEvent $event): int
+    {
+        $exception = $event->getThrowable();
+
+        if ($exception instanceof AccessDeniedException) {
+            return Response::HTTP_FORBIDDEN;
+        }
+        if ($exception instanceof HttpExceptionInterface) {
+            return $exception->getStatusCode();
+        }
+
+        return 500;
     }
 }

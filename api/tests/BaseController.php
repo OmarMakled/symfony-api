@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Tests\Functional;
+namespace App\Tests;
 
 use App\DataFixtures\UserFixtures;
+use App\Factory\UserFactory;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 abstract class BaseController extends WebTestCase
@@ -52,6 +53,18 @@ abstract class BaseController extends WebTestCase
         return $data['token'];
     }
 
+    public function generateAdminToken()
+    {
+        $this->client->request('POST', '/api/users/login', ['email' => UserFactory::ADMIN, 'password' => UserFactory::PASSWORD]);
+        $response = $this->client->getResponse();
+        $data = json_decode($response->getContent(), true);
+
+        self::assertEquals(200, $response->getStatusCode());
+        self::assertArrayHasKey('token', $data);
+
+        return $data['token'];
+    }
+
     public static function assertUser(array $data)
     {
         self::assertIsArray($data['user']);
@@ -62,5 +75,6 @@ abstract class BaseController extends WebTestCase
         self::assertArrayHasKey('avatar', $data['user']);
         self::assertArrayHasKey('is_active', $data['user']);
         self::assertArrayHasKey('photos', $data['user']);
+        self::assertArrayHasKey('isAdmin', $data['user']);
     }
 }
