@@ -2,7 +2,7 @@
   <v-card title="Profile" flat>
     <v-card-text>
       <ErrorList :error="responseError" />
-      <v-form class="mt-4" @submit.prevent="submit()">
+      <v-form class="mt-4" @submit.prevent="onSubmit">
         <v-text-field
           v-model="firstName"
           label="First Name"
@@ -41,9 +41,14 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
+  props: {
+    user: {
+      type: Object,
+    },
+  },
   data() {
     return {
       firstName: '',
@@ -80,15 +85,19 @@ export default {
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user',
       isSubmitting: 'isSubmitting',
       responseError: 'responseError',
     }),
   },
+  created() {
+    this.firstName = this.user.first_name;
+    this.lastName = this.user.last_name;
+    this.email = this.user.email;
+    this.avatar = this.user.avatar;
+  },
   methods: {
-    ...mapActions('auth', ['update']),
-    async submit() {
-      await this.update({
+    onSubmit() {
+      this.$emit('onSubmit', {
         firstName: this.firstName,
         lastName: this.lastName,
         password: this.password,
@@ -96,12 +105,6 @@ export default {
         avatar: this.avatar,
       });
     },
-  },
-  created() {
-    this.firstName = this.user.first_name;
-    this.lastName = this.user.last_name;
-    this.email = this.user.email;
-    this.avatar = this.user.avatar;
   },
 };
 </script>

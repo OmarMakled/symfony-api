@@ -1,7 +1,7 @@
 <template>
   <v-card title="Upload" flat>
     <v-card-text>
-      <v-form class="mt-4" @submit.prevent="submit()">
+      <v-form class="mt-4" @submit.prevent="onSubmit">
         <v-file-input
           v-model="photos"
           accept="image/*"
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -33,11 +33,8 @@ export default {
     ...mapGetters(['isSubmitting']),
   },
   methods: {
-    ...mapActions('auth', ['upload']),
-    async submit() {
-      await this.upload({
-        photos: this.photos,
-      });
+    onSubmit() {
+      this.$emit('onSubmit', this.photos);
       this.photos = null;
     },
   },

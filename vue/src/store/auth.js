@@ -98,7 +98,7 @@ const actions = {
       console.error('Fail:', message);
     }
   },
-  async upload({ commit, state }, { photos }) {
+  async upload({ commit, state }, photos) {
     try {
       const formData = new FormData();
       for (const photo of photos) {

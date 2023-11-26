@@ -2,50 +2,15 @@
   <v-container>
     <v-row v-if="user">
       <v-col cols="12" md="3">
-        <v-card class="text-center" flat>
-          <v-avatar size="150" class="mx-auto mt-4">
-            <img
-              :src="user.avatar"
-              :alt="user.first_name"
-              style="object-fit: cover; width: 100%; height: 100%"
-            />
-          </v-avatar>
-          <v-card-text class="text-left">
-            <v-list>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>First Name:</v-list-item-title>
-                  <v-list-item-subtitle>{{
-                    user.first_name
-                  }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Last Name:</v-list-item-title>
-                  <v-list-item-subtitle>{{
-                    user.last_name
-                  }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>Email:</v-list-item-title>
-                  <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn color="primary" @click="onLogout"> Logout </v-btn>
-          </v-card-actions>
-        </v-card>
+        <UserCard :user="user">
+          <v-spacer />
+          <v-btn color="primary" @click="onLogout"> Logout </v-btn>
+        </UserCard>
       </v-col>
       <v-col cols="12" md="9">
-        <Slider :user="user" class="mb-5" @delete="deletePhoto" />
-        <UpdateForm class="mb-5" />
-        <UploadForm class="mb-5" />
+        <PhotoSlider :user="user" class="mb-5" @delete="deletePhoto" />
+        <UpdateForm :user="user" class="mb-5" @onSubmit="update" />
+        <UploadForm :user="user" class="mb-5" @onSubmit="upload" />
       </v-col>
     </v-row>
   </v-container>
@@ -53,15 +18,17 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import router from '../router';
+import UserCard from '../components/UserCard.vue';
 import UpdateForm from '../components/UpdateForm.vue';
 import UploadForm from '../components/UploadForm.vue';
-import Slider from '../components/PhotoSlider.vue';
+import PhotoSlider from '../components/PhotoSlider.vue';
 
 export default {
   components: {
+    UserCard,
     UpdateForm,
     UploadForm,
-    Slider,
+    PhotoSlider,
   },
   computed: {
     ...mapGetters({
@@ -70,7 +37,7 @@ export default {
     }),
   },
   methods: {
-    ...mapActions('auth', ['logout', 'deletePhoto']),
+    ...mapActions('auth', ['logout', 'deletePhoto', 'update', 'upload']),
     onLogout() {
       this.logout();
       router.push('/');
