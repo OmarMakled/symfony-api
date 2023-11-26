@@ -40,6 +40,26 @@ const actions = {
       throw error;
     }
   },
+  async uploadPhotos({ rootGetters }, { userId, photos }) {
+    try {
+      const formData = new FormData();
+      if (photos) {
+        for (const photo of photos) {
+          formData.append('photos[]', photo);
+        }
+      }
+
+      const response = await api.uploadPhotos(rootGetters['auth/token'], {
+        userId,
+        formData,
+      });
+      const { user } = response.data;
+      return user;
+    } catch (error) {
+      console.error('Fail:', error.message);
+      throw error;
+    }
+  },
 };
 
 const getters = {};

@@ -81,4 +81,8 @@ export const adminApi = {
         Authorization: `Bearer ${token}`,
       },
     }),
+  uploadPhotos: (token, { userId, formData }) =>
+    api.post(`/admin/users/${userId}/photos`, formData, {
+      headers: { Authorization: `Bearer ${token}` },
+    }),
 };

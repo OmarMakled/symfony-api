@@ -10,7 +10,7 @@
       <v-col cols="12" md="9">
         <PhotoSlider :user="user" class="mb-5" @onDelete="onDeletePhoto" />
         <UpdateForm :user="user" class="mb-5" @onSubmit="update" />
-        <UploadForm :user="user" class="mb-5" @onSubmit="upload" />
+        <UploadForm :user="user" class="mb-5" @onSubmit="onUploadPhotos" />
       </v-col>
     </v-row>
   </v-container>
@@ -41,7 +41,12 @@ export default {
     },
   },
   methods: {
-    ...mapActions('admin', ['getUser', 'deletePhoto', 'deleteUser']),
+    ...mapActions('admin', [
+      'getUser',
+      'deletePhoto',
+      'deleteUser',
+      'uploadPhotos',
+    ]),
     async onDeletePhoto(photoId) {
       await this.deletePhoto(photoId);
       const index = this.user.photos.findIndex((photo) => photo.id === photoId);
@@ -55,6 +60,10 @@ export default {
     },
     async fetch() {
       this.user = await this.getUser(this.userId);
+    },
+    async onUploadPhotos(photos) {
+      const user = await this.uploadPhotos({ userId: this.userId, photos });
+      this.user = user;
     },
   },
   mounted() {

@@ -3,13 +3,17 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\DTO\PhotoDTO;
 use App\Resource\UserResource;
 use App\Repository\UserRepository;
 use App\Resource\PaginatorResource;
+use App\Service\Validator\ValidatorService;
+use App\EventListener\Event\PhotoUploadEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
@@ -54,5 +58,29 @@ class UserController extends AbstractController
         $userRepository->delete($user);
 
         return new JsonResponse([], Response::HTTP_NO_CONTENT);
+    }
+
+
+    /**
+     * @Route("/api/admin/users/{id}/photos", methods="POST")
+     *
+     * @param PhotoRepository $photoRepository
+     * @return JsonResponse
+     */
+    public function upload(Request $request, User $user, ValidatorService $validator, EventDispatcherInterface $eventDispatcher, UserRepository $userRepository): JsonResponse
+    {
+        $photoDTO = PhotoDTO::createFromRequest($request);
+
+        if (!$validator->isValid($photoDTO)) {
+            return new JsonResponse(['error' => $validator->getErrors()], Response::HTTP_BAD_REQUEST);
+        }
+
+        $eventDispatcher->dispatch(new PhotoUploadEvent(
+            $photoDTO->photos,
+            $user
+        ), PhotoUploadEvent::class);
+        $userRepository->add($user);
+
+        return new JsonResponse(UserResource::toArray($user), Response::HTTP_CREATED);
     }
 }
